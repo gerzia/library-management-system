@@ -51,4 +51,4 @@ cd library-management-system
 pip install -r requirements.txt
 # 运行网站
 python app.py
-<img width="2489" height="1242" alt="image" src="https://github.com/user-attachments/assets/ce929386-850c-4bba-b4c8-fd008ff11cc8" />
+
