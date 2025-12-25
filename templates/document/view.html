@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}查看文档 - {{ document.filename }} - 图书管理系统{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>文档内容：{{ document.filename }}</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('upload_document') }}">文档导入</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ document.filename }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- 文档信息 -->
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <h5 class="mb-0">文档信息</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>文件名：</strong>{{ document.filename }}</p>
+                <p><strong>文件类型：</strong>{{ document.file_type }}</p>
+                <p><strong>上传时间：</strong>{{ document.upload_time.strftime('%Y-%m-%d %H:%M') }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>文件路径：</strong>{{ document.file_path }}</p>
+                <p><strong>内容长度：</strong>{{ document.content|length }} 字符</p>
+                <p>
+                    <a href="{{ url_for('upload_document') }}" class="btn btn-primary">
+                        返回文档列表
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 原始内容 -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">原始内容</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="document-content">
+            {{ document.content or '暂无内容' }}
+        </div>
+    </div>
+</div>
+
+<!-- 翻译内容 -->
+<div class="card">
+    <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">翻译内容（英文自动转中文）</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="document-content">
+            {{ document.translated_content or '无需翻译' }}
+        </div>
+    </div>
+</div>
+{% endblock %}

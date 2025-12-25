@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}管理员仪表盘 - 图书管理系统{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>管理员仪表盘</h2>
+        <p class="text-muted">系统数据概览与快速操作</p>
+    </div>
+</div>
+
+<!-- 统计卡片 -->
+<div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card stat-card bg-primary text-white h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">图书总数</h5>
+                <p class="display-4">{{ total_books }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card stat-card bg-secondary text-white h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">杂志总数</h5>
+                <p class="display-4">{{ total_magazines }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card stat-card bg-success text-white h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">已借出数量</h5>
+                <p class="display-4">{{ borrowed_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card stat-card bg-danger text-white h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">逾期数量</h5>
+                <p class="display-4">{{ overdue_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 快速操作 -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">快速操作</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('manage_publications') }}" class="btn btn-primary">管理出版物</a>
+                    <a href="{{ url_for('admin_statistics') }}" class="btn btn-secondary">查看借阅统计</a>
+                    <a href="{{ url_for('upload_document') }}" class="btn btn-success">导入文档</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">系统信息</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        注册读者总数
+                        <span class="badge bg-primary rounded-pill">{{ total_users }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        可借阅出版物
+                        <span class="badge bg-success rounded-pill">{{ total_books + total_magazines - borrowed_count }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        管理员账号
+                        <span class="badge bg-info rounded-pill">admin</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

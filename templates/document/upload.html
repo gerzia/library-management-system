@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}文档导入 - 图书管理系统{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">文档导入</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">选择文档</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".txt,.md,.doc,.docx,.pdf" required>
+                        <div class="form-text">支持格式：TXT、MD、DOC、DOCX、PDF，英文内容将自动翻译为中文</div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">上传并解析</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">我的文档</h5>
+            </div>
+            <div class="card-body">
+                {% if documents %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>文件名</th>
+                                    <th>文件类型</th>
+                                    <th>上传时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for doc in documents %}
+                                    <tr>
+                                        <td>{{ doc.filename }}</td>
+                                        <td>{{ doc.file_type }}</td>
+                                        <td>{{ doc.upload_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            <a href="{{ url_for('view_document', doc_id=doc.id) }}" class="btn btn-sm btn-info">查看</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">暂无上传的文档</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

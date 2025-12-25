@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}借阅出版物 - 图书管理系统{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>借阅出版物</h2>
+        <p class="text-muted">浏览并借阅可使用的图书和杂志</p>
+    </div>
+</div>
+
+<!-- 搜索筛选 -->
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <h5 class="mb-0">搜索与筛选</h5>
+    </div>
+    <div class="card-body">
+        <form id="search-form" method="GET" action="{{ url_for('borrow_books') }}">
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="search-input" name="search" 
+                           placeholder="输入标题关键词搜索..." value="{{ search }}">
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select" name="type">
+                        <option value="all" {% if pub_type == 'all' %}selected{% endif %}>全部类型</option>
+                        <option value="book" {% if pub_type == 'book' %}selected{% endif %}>图书</option>
+                        <option value="magazine" {% if pub_type == 'magazine' %}selected{% endif %}>杂志</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">搜索</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 出版物列表 -->
+<div class="row">
+    {% for pub in publications %}
+    <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">{{ pub.title }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    {% if pub.type == 'book' %}
+                        <strong>作者：</strong>{{ pub.author or '未知' }}<br>
+                        <strong>分类：</strong>{{ pub.category }}<br>
+                        <strong>ISBN：</strong>{{ pub.isbn or '未填写' }}
+                    {% else %}
+                        <strong>期号：</strong>{{ pub.issue or '未知' }}<br>
+                        <strong>出版商：</strong>{{ pub.publisher or '未知' }}<br>
+                        <strong>是否最新：</strong>{{ '是' if pub.is_latest else '否' }}
+                    {% endif %}
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">
+                        可借阅天数：{{ pub.get_max_loan_days() }}天
+                    </small>
+                </p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{{ url_for('do_borrow', pub_id=pub.id) }}" 
+                   class="btn btn-primary btn-borrow w-100" 
+                   data-title="{{ pub.title }}">
+                    立即借阅
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+    {% if not publications %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            暂无符合条件的可借阅出版物
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

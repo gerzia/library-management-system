@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}出版物管理 - 图书管理系统{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>出版物管理</h2>
+        <p class="text-muted">添加/删除/查看图书和杂志</p>
+    </div>
+</div>
+
+<!-- 添加出版物表单 -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">添加新出版物</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('manage_publications') }}">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="title" class="form-label">标题 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="title" name="title" required placeholder="请输入出版物标题">
+                </div>
+                <div class="col-md-6">
+                    <label for="type" class="form-label">类型 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="type" name="type" required onchange="togglePublicationFields()">
+                        <option value="">请选择类型</option>
+                        <option value="book">图书</option>
+                        <option value="magazine">杂志</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 图书专属字段 -->
+            <div id="book-fields" class="mb-3 d-none">
+                <h6 class="mb-3">图书信息</h6>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="author" class="form-label">作者</label>
+                        <input type="text" class="form-control" id="author" name="author" placeholder="请输入作者姓名">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="isbn" class="form-label">ISBN</label>
+                        <input type="text" class="form-control" id="isbn" name="isbn" placeholder="请输入ISBN编号">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="category" class="form-label">分类</label>
+                        <input type="text" class="form-control" id="category" name="category" placeholder="请输入分类（默认：技术）">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 杂志专属字段 -->
+            <div id="magazine-fields" class="mb-3 d-none">
+                <h6 class="mb-3">杂志信息</h6>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="issue" class="form-label">期号</label>
+                        <input type="text" class="form-control" id="issue" name="issue" placeholder="例如：2024-01">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="publisher" class="form-label">出版商</label>
+                        <input type="text" class="form-control" id="publisher" name="publisher" placeholder="请输入出版商名称">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">添加出版物</button>
+        </form>
+    </div>
+</div>
+
+<!-- 出版物列表 -->
+<div class="card">
+    <div class="card-header bg-light">
+        <h5 class="mb-0">出版物列表</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>标题</th>
+                        <th>类型</th>
+                        <th>作者/出版商</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pub in publications %}
+                    <tr>
+                        <td>{{ pub.id }}</td>
+                        <td>{{ pub.title }}</td>
+                        <td>
+                            {% if pub.type == 'book' %}
+                                <span class="badge bg-primary">图书</span>
+                            {% else %}
+                                <span class="badge bg-secondary">杂志</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if pub.type == 'book' %}
+                                {{ pub.author or '未知' }}
+                            {% else %}
+                                {{ pub.publisher or '未知' }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if pub.is_borrowed %}
+                                <span class="badge bg-danger">已借出</span>
+                            {% else %}
+                                <span class="badge bg-success">可借阅</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-danger btn-delete"
+                               onclick="event.preventDefault(); location.href='{{ url_for('delete_publication', pub_id=pub.id) }}'">
+                                删除
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if not publications %}
+            <p class="text-muted text-center mb-0">暂无出版物数据</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// 切换出版物类型字段显示
+function togglePublicationFields() {
+    const type = document.getElementById('type').value;
+    const bookFields = document.getElementById('book-fields');
+    const magazineFields = document.getElementById('magazine-fields');
+
+    bookFields.classList.add('d-none');
+    magazineFields.classList.add('d-none');
+
+    if (type === 'book') {
+        bookFields.classList.remove('d-none');
+    } else if (type === 'magazine') {
+        magazineFields.classList.remove('d-none');
+    }
+}
+</script>
+{% endblock %}

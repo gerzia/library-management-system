@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}借阅统计 - 图书管理系统{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>借阅统计分析</h2>
+        <p class="text-muted">系统借阅数据可视化与分析</p>
+    </div>
+</div>
+
+<!-- 图书分类统计 -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">图书分类统计</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>分类</th>
+                                <th>数量</th>
+                                <th>占比</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set total = category_stats | sum(attribute=1) %}
+                            {% for category, count in category_stats %}
+                            <tr>
+                                <td>{{ category }}</td>
+                                <td>{{ count }}</td>
+                                <td>{{ "%.1f%%"|format((count/total)*100) if total > 0 else '0%' }}</td>
+                            </tr>
+                            {% endfor %}
+                            {% if not category_stats %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">暂无分类数据</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 热门借阅排行 -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">热门借阅排行（前10）</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>标题</th>
+                                <th>借阅次数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for title, count in borrow_stats %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ title }}</td>
+                                <td>{{ count }}</td>
+                            </tr>
+                            {% endfor %}
+                            {% if not borrow_stats %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">暂无借阅数据</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 逾期用户统计 -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">逾期用户统计</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>用户名</th>
+                                <th>逾期数量</th>
+                                <th>操作建议</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for username, count in overdue_users %}
+                            <tr>
+                                <td>{{ username }}</td>
+                                <td>{{ count }}</td>
+                                <td>
+                                    <span class="text-danger">提醒用户尽快归还</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% if not overdue_users %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">暂无逾期用户</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
