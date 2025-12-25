@@ -1,4 +1,4 @@
-# 图书馆管理系统（Library Management System）
+<img width="2489" height="1242" alt="a0d84f8b0f477bc28913051bb4feb499" src="https://github.com/user-attachments/assets/a9e21cae-d1eb-4659-b584-aaeda67f4363" /># 图书馆管理系统（Library Management System）
 基于 Flask + MySQL 开发的轻量级图书馆管理系统，采用面向对象设计思想，支持管理员/读者双角色，实现出版物管理、借阅归还、文档导入翻译等核心功能,用作软件工程课程设计或者专业毕业设计。
 
 ## 项目介绍
@@ -26,7 +26,16 @@
 3. MySQL：8.0 及以上
 4. 依赖库：见 `requirements.txt`
 ## 演示效果
-<img width="2489" height="1242" alt="image" src="https://github.com/user-attachments/assets/0001f596-28d0-46ad-bba3-eac15c2b10d9" />
+### 读者仪表盘：
+<img width="2489" height="1242" alt="a0d84f8b0f477bc28913051bb4feb499" src="https://github.com/user-attachments/assets/ed0129f4-8fbb-48d1-b247-565c50e005fe" />
+### 借阅页面（支持模糊搜索）：
+<img width="2489" height="1242" alt="image" src="https://github.com/user-attachments/assets/3b1a8bd5-4308-4194-a4be-a9753654efc6" />
+### 我的借阅记录：
+<img width="2489" height="1242" alt="image" src="https://github.com/user-attachments/assets/b487ede4-1328-4a39-906c-c0297624f24b" />
+
+### 文档解析：
+<img width="2489" height="1242" alt="image" src="https://github.com/user-attachments/assets/1e867dd4-7102-492e-843a-4c8072e8b397" />
+
 
 ## 部署步骤（Ubuntu 系统）
 ### 1. 克隆项目（本地/服务器）
