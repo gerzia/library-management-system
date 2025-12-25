@@ -25,6 +25,8 @@
 2. Python：3.10 及以上（Ubuntu 22.04 默认自带 3.10，可通过 `python3 --version` 验证）
 3. MySQL：8.0 及以上
 4. 依赖库：见 `requirements.txt`
+## 演示效果
+<img width="2489" height="1242" alt="image" src="https://github.com/user-attachments/assets/0001f596-28d0-46ad-bba3-eac15c2b10d9" />
 
 ## 部署步骤（Ubuntu 系统）
 ### 1. 克隆项目（本地/服务器）
